@@ -1,28 +1,28 @@
+# helper/speechtotext.py
 import speech_recognition as sr
-import webbrowser as wb
 
 def voice_search():
-    chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
+    """Convert speech to text using Google Speech Recognition"""
     r = sr.Recognizer()
 
     with sr.Microphone() as source:
-        print('Say something...')
-        audio = r.listen(source)
-        print('Done!')
+        print('🎤 Listening...')
+        # Adjust for ambient noise
+        r.adjust_for_ambient_noise(source, duration=0.5)
+        # Listen for minimum 10 seconds (timeout=10) and allow up to 30 seconds of speech
+        audio = r.listen(source, timeout=10, phrase_time_limit=30)
+        print('✓ Processing...')
 
     try:
         text = r.recognize_google(audio)
-        print('Google thinks you said:', text)
-        search_url = 'https://www.google.com/search?q=' + text
-        try:
-            wb.get(chrome_path).open(search_url)
-        except Exception:
-            # non-fatal if browser can't be opened
-            pass
+        print(f'✓ Recognized: {text}')
         return text
-
-    except Exception as e:
-        print('Error:', e)
+    except sr.UnknownValueError:
+        print('❌ Could not understand audio')
         return None
-
-# Note: do not auto-run the function on import; caller should invoke `voice_search()`.
+    except sr.RequestError as e:
+        print(f'❌ Error with speech recognition service: {e}')
+        return None
+    except Exception as e:
+        print(f'❌ Error: {e}')
+        return None

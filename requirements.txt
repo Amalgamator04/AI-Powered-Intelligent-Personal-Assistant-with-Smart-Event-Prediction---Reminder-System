@@ -1,0 +1,15 @@
+# Core dependencies
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+torch>=2.0.0
+numpy>=1.24.0
+
+# API and HTTP requests
+requests>=2.31.0
+
+# Speech recognition
+SpeechRecognition>=3.10.0
+pyaudio>=0.2.11
+
+# Optional: for better audio handling
+pydub>=0.25.1
